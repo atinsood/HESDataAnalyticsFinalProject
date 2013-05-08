@@ -1,0 +1,17 @@
+@namespace ("edu.harvard.avro.twitter")
+protocol TwitterService{
+    
+    record TweetRecord{
+        int tweetId;
+        string text;
+        string username;
+        array<string> hashtags;
+        }
+
+    error SendError{
+        string message;
+        }
+
+    void sendTweet(TweetRecord tweet) throws SendError;
+    
+    }
