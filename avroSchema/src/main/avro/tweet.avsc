@@ -1,0 +1,9 @@
+{"namespace": "edu.harvard.twitter.schema",
+ "type": "record",
+ "name": "Tweet",
+ "fields": [
+     {"name": "tweetId", "type": "int"},
+     {"name": "user", "type": "string"},
+     {"name": "text", "type": "string"}]
+ ]
+}
