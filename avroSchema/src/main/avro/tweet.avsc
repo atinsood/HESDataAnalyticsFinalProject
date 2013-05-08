@@ -4,6 +4,6 @@
  "fields": [
      {"name": "tweetId", "type": "int"},
      {"name": "user", "type": "string"},
-     {"name": "text", "type": "string"}]
+     {"name": "text", "type": "string"}
  ]
 }
