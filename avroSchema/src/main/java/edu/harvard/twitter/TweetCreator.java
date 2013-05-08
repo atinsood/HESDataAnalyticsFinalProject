@@ -12,6 +12,10 @@ import org.apache.avro.specific.SpecificDatumWriter;
 
 import edu.harvard.twitter.schema.Tweet;
 
+/*
+ * Using avro with code generation. Meaning that the Tweet class was generated 
+ * from the schema file
+ */
 public class TweetCreator {
 
 	private Tweet tweet1;
@@ -27,8 +31,8 @@ public class TweetCreator {
 
 		// write these to a file
 		tweetCretor.serializeTweet();
-		
-		//read these from file and print
+
+		// read these from file and print
 		tweetCretor.desrializeTweet();
 	}
 
@@ -63,25 +67,25 @@ public class TweetCreator {
 
 	private void desrializeTweet() {
 
-		File file = new File("tweets.avro");//file where the tweets were serialized
-		
-		//Readers to deserialize tweet
+		File file = new File("tweets.avro");// file where the tweets were
+											// serialized
+
+		// Readers to deserialize tweet
 		DatumReader<Tweet> userDatumReader = new SpecificDatumReader<Tweet>(
 				Tweet.class);
 		DataFileReader<Tweet> dataFileReader;
 		try {
-			dataFileReader = new DataFileReader<Tweet>(file,
-					userDatumReader);
-			
-			//Read the tweets and print them
+			dataFileReader = new DataFileReader<Tweet>(file, userDatumReader);
+
+			// Read the tweets and print them
 			Tweet tweet = null;
 			while (dataFileReader.hasNext()) {
 				tweet = dataFileReader.next(tweet);
 				System.out.println(tweet);
 			}
-			
+
 		} catch (IOException e) {
-			//Unable to work with the file
+			// Unable to work with the file
 			e.printStackTrace();
 		}
 	}
@@ -114,7 +118,8 @@ public class TweetCreator {
 	// Using builder pattern
 	private Tweet createTweetMethod3() {
 		Tweet tweet = Tweet.newBuilder().setTweetId(1).setUser("user3")
-				.setText("Hello world, even I am tweeting using method 3").build();
+				.setText("Hello world, even I am tweeting using method 3")
+				.build();
 		return tweet;
 	}
 
