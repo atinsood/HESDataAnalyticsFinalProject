@@ -5,6 +5,7 @@
  */
 package edu.harvard.avro.twitter;
 
+
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public interface TwitterService {
