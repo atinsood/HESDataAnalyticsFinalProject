@@ -65,3 +65,12 @@ asood@starbuck-2 [~/work/opensource/college/avroSchema]
 ├── tweets.avro
 └── tweetsWithoutCodeGen.avro
 ```
+
+Note that src/main/avro/tweet.avsc file is what describes the schema. The pom.xml has been customized to perform code generation. 
+Running mvn clean package generates src/main/java/edu/harvard/avro/twitter/schema/Tweet.java
+
+TweeterCreator.java uses this generated Tweet.java to demonstrate how to use avro genrated POJO . Similarly TweetCreatorNoCodeGeneration.java demonstrates how to use avro without the need to generate Tweet.java and how the tweet.avsc file itself can be used to create a record that conforms to a schema. 
+
+tweets.avro and tweetsWithoutCodeGen.avro are the files that get generated when the code in TweeterCreator.java and TweetCreatorNoCodeGeneration.java is run respectively. 
+
+src/main/python/tweetExample.py contains code to do serializing/deserializing in python while conforming to the same tweet.avsc schema.
