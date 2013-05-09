@@ -155,3 +155,65 @@ javaXPython/
     │       ├── tweetWithAvdl.avdl
     │       └── tweetWithAvr.avr
 ```
+
+tweetWithAvdl.avdl file describes both schema and the service interface.  Running mvn clean package generates SendError.java , TweetRecord.java and TwitterService.java
+
+TwitterServiceImpl.java implements TwitterService.java and starts an http server on 9090 port.
+```
+	@Override
+	public Void sendTweet(TweetRecord tweet) throws AvroRemoteException,
+			SendError {
+
+		// Echos back the contents
+		System.out.println("Java server received message with id: "
+				+ tweet.getTweetId() + " from user: " + tweet.getUsername()
+				+ " and has text: " + tweet.getText());
+
+		return null;
+	}
+
+	public void startServer() {
+
+		try {
+			server = new HttpServer(new SpecificResponder(TwitterService.class,
+					this), port);
+
+			server.start();
+			isServerStarted = true;
+		} catch (Exception e) {
+			isServerStarted = false;
+			server.close();
+			e.printStackTrace();
+		}
+	}
+```
+
+src/main/python/pythonTweeterServer.py acts as the client for the above server and sends a RPC call over HTTP to sendTweet method containing TweetRecord.
+
+```
+> cat javaXPython/src/main/python/pythonTweeterServer.py
+#!/usr/bin/python
+
+import avro.ipc as ipc
+import avro.protocol as protocol
+
+avroProtocol = protocol.parse(open("tweetWithAvr.avr").read())
+
+java_rpc_server_address = ("localhost", 9090)
+
+if __name__ == "__main__":
+
+    client = ipc.HTTPTransceiver(java_rpc_server_address[0], java_rpc_server_address[1])
+    requestor = ipc.Requestor(avroProtocol, client)
+
+    tweet = {"tweetId": 1, "username": "pythonUser", "text": "This is a tweet from python"}
+
+    params = {"tweet": tweet}
+    requestor.request("sendTweet", params)
+    client.close()
+```
+
+This example highlights the fact that how a typed schema like avro can be useful when communicating across multiple services written in different programming languages. 
+
+Note : tweetWithAvr.avr file  used in the python client is generated using 
+java -jar avro-tools-1.7.4.jar idl tweetWithAvdl.avdl tweetWithAvr.avr
