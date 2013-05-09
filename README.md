@@ -241,10 +241,13 @@ Generate tweets randomly picks a phone brand name and an emotion and then genera
 
 The code needed for mapper, reducer and running the job is present in PhoneSentimentAnalyzer.java
 
-```
 Mapper
-		
-        @Override
+
+```
+public static class PhoneSentimentMapper extends
+			AvroMapper<Tweet, Pair<CharSequence, Integer>> {
+
+		@Override
 		public void map(Tweet tweet,
 				AvroCollector<Pair<CharSequence, Integer>> collector,
 				Reporter reporter) throws IOException {
@@ -266,10 +269,9 @@ Mapper
 
 Mapper takes the schema object Tweet as input and emits out hashtags and a count of 1. 
 
-```
 Reducer
-
-	public static class PhoneSentimentReducer extends
+```
+public static class PhoneSentimentReducer extends
 			AvroReducer<CharSequence, Integer, Pair<CharSequence, Integer>> {
 
 		@Override
