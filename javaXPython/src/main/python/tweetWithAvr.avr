@@ -1,0 +1,35 @@
+{
+  "protocol" : "TwitterService",
+  "namespace" : "edu.harvard.avro.twitter",
+  "types" : [ {
+    "type" : "record",
+    "name" : "TweetRecord",
+    "fields" : [ {
+      "name" : "tweetId",
+      "type" : "int"
+    }, {
+      "name" : "text",
+      "type" : "string"
+    }, {
+      "name" : "username",
+      "type" : "string"
+    } ]
+  }, {
+    "type" : "error",
+    "name" : "SendError",
+    "fields" : [ {
+      "name" : "message",
+      "type" : "string"
+    } ]
+  } ],
+  "messages" : {
+    "sendTweet" : {
+      "request" : [ {
+        "name" : "tweet",
+        "type" : "TweetRecord"
+      } ],
+      "response" : "null",
+      "errors" : [ "SendError" ]
+    }
+  }
+}
