@@ -290,3 +290,15 @@ Reducer
 	}
 ```
 Reducer takes the hashtags emitted by mapper and key and count of 1 everytime a mapper found a hashtag as value. The reducer then counts all the 1's corresponding to a given set of hashtags and emits out the hashtag followed total as the result. 
+
+You can run the job either locally using
+
+mvn exec:java -q -Dexec.mainClass=edu.harvard.twitter.PhoneSentimentAnalyzer -Dexec.args="input output"
+
+or on hadoop by uploading the tweets.avro to HDFS and then running
+
+hadoop jar target/avroMapReduce-1.0-SNAPSHOT.jar <location of tweets.avro on HDFS> <location where you want the output>
+
+The output generated with either approach is in avro format which can be made human readable by 
+
+java -jar avro-tools-1.7.4.jar tojson part-00000.avro
