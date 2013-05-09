@@ -44,10 +44,10 @@ public class GenerateTweets {
 						+ brand, hashTags);
 				fileWriter.append(tweet);
 
-				System.out.println("Tweet with id: " + tweet.getTweetId()
-						+ " from user: " + tweet.getUser() + " and has text: "
-						+ tweet.getText() + " with hashtags: "
-						+ tweet.getHashtags());
+//				System.out.println("Tweet with id: " + tweet.getTweetId()
+//						+ " from user: " + tweet.getUser() + " and has text: "
+//						+ tweet.getText() + " with hashtags: "
+//						+ tweet.getHashtags());
 
 			}
 
