@@ -12,9 +12,6 @@ aspects of Avro.
 This is how the project structure looks like
 
 ```
-asood@starbuck-2 [~/work/opensource/college]
-> tree -L 1
-.
 ├── README.md
 ├── avroMapReduce
 ├── avroSchema
@@ -27,9 +24,6 @@ asood@starbuck-2 [~/work/opensource/college]
 This project basically highlights avro being used as a seralization/deserialtion framework and basic RPC
 
 ```
-asood@starbuck-2 [~/work/opensource/college/avroSchema]
-> tree
-.
 ├── pom.xml
 ├── src
 │   ├── main
@@ -132,8 +126,6 @@ src/main/java/edu/harvard/avro/twitter/impl/rpc/RPCTwitterServiceImplProject2.ja
 This project highlights how avro can be used for communicating across multiple programming languages
 
 ```
-> tree javaXPython/
-javaXPython/
 ├── pom.xml
 └── src
     ├── main
@@ -217,3 +209,84 @@ This example highlights the fact that how a typed schema like avro can be useful
 
 Note : tweetWithAvr.avr file  used in the python client is generated using 
 java -jar avro-tools-1.7.4.jar idl tweetWithAvdl.avdl tweetWithAvr.avr
+
+------------------
+avroMapReduce
+------------------
+This example demonstrates how avro can be useful with map reduce. This project generates a number of sample tweets and then write them to a input/tweets.avro file which can be later used as an input for map reduce. The schema used is defined by src/main/avro/tweets.avsc . Running mvn clean package generates the schema as src/main/java/edu/harvard/twitter/schema/Tweet.java
+
+```
+├── avro-tools-1.7.4.jar
+├── dependency-reduced-pom.xml
+├── input
+│   └── tweets.avro
+├── pom.xml
+└── src
+    ├── main
+    │   ├── avro
+    │   │   └── tweet.avsc
+    │   └── java
+    │       └── edu
+    │           └── harvard
+    │               └── twitter
+    │                   ├── GenerateTweets.java
+    │                   ├── PhoneSentimentAnalyzer.java
+    │                   └── schema
+    │                       └── Tweet.java
+    ```
+
+The code to generate random tweets can be run using mvn exec:java -q -Dexec.mainClass=edu.havrvard.twitter.GenerateTweets
+
+Generate tweets randomly picks a phone brand name and an emotion and then generates a tweet with text "I <emotion> my new <phone brand> phone. Additionaly the emotion and phone brand are also added as hash tags to the tweet, which are later used to figure out the number of people associated with a given emotion for a phone brand. 
+
+The code needed for mapper, reducer and running the job is present in PhoneSentimentAnalyzer.java
+
+```
+------
+Mapper
+------
+		
+        @Override
+		public void map(Tweet tweet,
+				AvroCollector<Pair<CharSequence, Integer>> collector,
+				Reporter reporter) throws IOException {
+
+			// TODO Possible bug. Currently assumes emotion hashtag will follow
+			// brand hashtag
+			StringBuilder hashtags = new StringBuilder();
+			// Concatenate all hashtags
+			for (CharSequence tag : tweet.getHashtags()) {
+				hashtags.append(tag).append(" ");
+				// FIXME There will always be a trailing space
+			}
+
+			collector.collect(new Pair<CharSequence, Integer>(hashtags
+					.toString(), 1));
+		}
+	}
+```
+
+Mapper takes the schema object Tweet as input and emits out hashtags and a count of 1. 
+
+```
+--------
+Reducer
+--------
+	public static class PhoneSentimentReducer extends
+			AvroReducer<CharSequence, Integer, Pair<CharSequence, Integer>> {
+
+		@Override
+		public void reduce(CharSequence key, Iterable<Integer> values,
+				AvroCollector<Pair<CharSequence, Integer>> collector,
+				Reporter reporter) throws IOException {
+
+			int sum = 0;
+			for (Integer count : values) {
+				sum += count;
+			}
+
+			collector.collect(new Pair<CharSequence, Integer>(key, sum));
+		}
+	}
+```
+Reducer takes the hashtags emitted by mapper and key and count of 1 everytime a mapper found a hashtag as value. The reducer then counts all the 1's corresponding to a given set of hashtags and emits out the hashtag followed total as the result. 
