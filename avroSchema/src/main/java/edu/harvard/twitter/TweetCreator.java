@@ -25,25 +25,17 @@ public class TweetCreator {
 	public static void main(String[] args) {
 
 		TweetCreator tweetCretor = new TweetCreator();
-
-		// create tweets
-		tweetCretor.createTweet();
-
-		// write these to a file
-		tweetCretor.serializeTweet();
-
-		// read these from file and print
-		tweetCretor.desrializeTweet();
+		tweetCretor.createTweet(); // create tweets
+		tweetCretor.serializeTweet(); // write these to a file
+		tweetCretor.desrializeTweet(); // read these from file and print
 	}
 
 	private void serializeTweet() {
 
 		// Create a file to write the objects to
 		File tweets = new File("tweets.avro");
-
-		// Create a file writer
 		DatumWriter<Tweet> tweetWriter = new SpecificDatumWriter<Tweet>(
-				Tweet.class);
+				Tweet.class);// Create a file writer
 		DataFileWriter<Tweet> tweetToFileWriter = new DataFileWriter<Tweet>(
 				tweetWriter);
 
@@ -117,7 +109,7 @@ public class TweetCreator {
 
 	// Using builder pattern
 	private Tweet createTweetMethod3() {
-		Tweet tweet = Tweet.newBuilder().setTweetId(1).setUser("user3")
+		Tweet tweet = Tweet.newBuilder().setTweetId(3).setUser("user3")
 				.setText("Hello world, even I am tweeting using method 3")
 				.build();
 		return tweet;
