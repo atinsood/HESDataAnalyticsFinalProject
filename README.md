@@ -233,7 +233,7 @@ This example demonstrates how avro can be useful with map reduce. This project g
     │                   ├── PhoneSentimentAnalyzer.java
     │                   └── schema
     │                       └── Tweet.java
-    ```
+```
 
 The code to generate random tweets can be run using mvn exec:java -q -Dexec.mainClass=edu.havrvard.twitter.GenerateTweets
 
