@@ -20,8 +20,10 @@ asood@starbuck-2 [~/work/opensource/college]
 ├── avroSchema
 └── javaXPython
 ```
+------------------------------------
+### avroSchema ###
+------------------------------------
 
-> ### avroSchema ###
 This project basically highlights avro being used as a seralization/deserialtion framework and basic RPC
 
 ```
@@ -123,3 +125,33 @@ src/main/java/edu/harvard/avro/twitter/
 TwitterService.java is the service class. src/main/java/edu/harvard/avro/twitter/impl/EchoTwitterServiceImpl.java is a sample implementation of this class. Refer to  src/main/java/edu/harvard/avro/twitter/impl/TwitterClient.java to see how objects generated via avro can be used for exchanging data. 
 
 src/main/java/edu/harvard/avro/twitter/impl/rpc/RPCTwitterServiceImplProject2.java and src/main/java/edu/harvard/avro/twitter/impl/rpc/RPCTwitterClient.java demonstrates how data can be transferred over RPC
+
+------------------------------------
+### javaXPython ###
+------------------------------------
+This project highlights how avro can be used for communicating across multiple programming languages
+
+```
+> tree javaXPython/
+javaXPython/
+├── pom.xml
+└── src
+    ├── main
+    │   ├── avro
+    │   │   └── tweetWithAvdl.avdl
+    │   ├── java
+    │   │   └── edu
+    │   │       └── harvard
+    │   │           └── avro
+    │   │               └── twitter
+    │   │                   ├── SendError.java
+    │   │                   ├── TweetRecord.java
+    │   │                   ├── TwitterService.java
+    │   │                   └── impl
+    │   │                       └── TwitterServiceImpl.java
+    │   └── python
+    │       ├── avro-tools-1.7.4.jar
+    │       ├── pythonTweeterServer.py
+    │       ├── tweetWithAvdl.avdl
+    │       └── tweetWithAvr.avr
+```
